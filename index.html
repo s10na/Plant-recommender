@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agro-Eco Plant Recommender</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background: #f4f8f7;
+      color: #333;
+    }
+    h2 {
+      color: #2a6d4f;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    select, button {
+      margin-top: 5px;
+      padding: 8px;
+      width: 200px;
+    }
+    button {
+      margin-top: 15px;
+      background-color: #2a6d4f;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #3c8b67;
+    }
+    #output {
+      margin-top: 20px;
+      background: #e0f3e5;
+      padding: 15px;
+      border-radius: 8px;
+      width: fit-content;
+    }
+  </style>
+</head>
+<body>
+  <h2>Agro-Eco Plant Recommender Tool</h2>
+
+  <label for="slope">Slope:</label>
+  <select id="slope">
+    <option>Flat</option>
+    <option>Moderate</option>
+    <option>Steep</option>
+  </select>
+
+  <label for="soil">Soil Type:</label>
+  <select id="soil">
+    <option>Clay</option>
+    <option>Sandy</option>
+    <option>Loam</option>
+  </select>
+
+  <label for="rain">Precipitation Pattern:</label>
+  <select id="rain">
+    <option>Dry</option>
+    <option>Moderate</option>
+    <option>Heavy</option>
+  </select>
+
+  <button onclick="recommendPlant()">Get Recommendation</button>
+
+  <div id="output"></div>
+
+  <script>
+    function recommendPlant() {
+      const slope = document.getElementById("slope").value;
+      const soil = document.getElementById("soil").value;
+      const rain = document.getElementById("rain").value;
+
+      let result = "";
+
+      if (slope === "Steep" && soil === "Sandy" && rain === "Heavy") {
+        result = "✅ <strong>Vetiver Grass</strong> – Excellent for stabilizing steep, sandy slopes under heavy rainfall.";
+      } else if (slope === "Moderate" && soil === "Loam") {
+        result = "🌾 <strong>Switchgrass</strong> or <strong>Red Clover</strong> – Great for erosion control on moderate slopes with loamy soil.";
+      } else if (slope === "Flat") {
+        result = "🌱 <strong>Cover crops</strong> like <em>Winter Rye</em> or <em>Crimson Clover</em> help reduce runoff and improve soil health.";
+      } else if (slope === "Steep" && soil === "Clay") {
+        result = "🌿 <strong>Willow shrubs</strong> – Deep-rooted and effective for clay-heavy steep terrains.";
+      } else {
+        result = "🪴 Try a mix of <strong>native grasses</strong> and <strong>legumes</strong> suited to your region for optimal erosion control.";
+      }
+
+      document.getElementById("output").innerHTML = result;
+    }
+  </script>
+</body>
+</html>
