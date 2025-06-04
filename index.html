@@ -46,10 +46,10 @@
 <body>
   <h2>Agro-Eco Buffer Strip Recommender Tool</h2>
 
-  <label for="slope">Field Slope [%]:</label>
+  <label for="slope">Field Slope:</label>
   <select id="slope">
-    <option>&lt;10</option>
-    <option>&gt;10</option>
+    <option>&lt;10 %</option>
+    <option>&gt;10 %</option>
   </select>
 
   <label for="soil">Soil Type:</label>
@@ -66,26 +66,26 @@
     <option>Heavy</option>
   </select>
 
-  <label for="crop">Crop Coverage [%]:</label>
+  <label for="crop">Crop Coverage:</label>
   <select id="crop">
-    <option>&lt;25</option>
-    <option>25-50</option>
-    <option>50-75</option>
-    <option>&gt;100</option>
+    <option>&lt;25 %</option>
+    <option>25-50 %</option>
+    <option>50-75 %</option>
+    <option>&gt;100 %</option>
   </select>
 
-  <label for="distance">Distance to Water Body [m]:</label>
+  <label for="distance">Distance to Water Body:</label>
   <select id="distance">
-    <option>&lt;50</option>
-    <option>50–200</option>
-    <option>&gt;200</option>
+    <option>&lt;50 m</option>
+    <option>50–200 m</option>
+    <option>&gt;200 m</option>
   </select>
 
-  <label for="fertilizer">Fertilizer Use [kg N/ha]:</label>
+  <label for="fertilizer">Fertilizer Use:</label>
   <select id="fertilizer">
-    <option>&lt;50</option>
-    <option>50-150</option>
-    <option>gt&150</option>
+    <option>&lt;50 kg N/ha</option>
+    <option>50-150 kg N/ha</option>
+    <option>gt&150 kg N/ha</option>
   </select>
 
   <button onclick="recommendBuffer()">Get Recommendation</button>
@@ -105,7 +105,7 @@
       let vegetation = "";
 
       // Logic for buffer width
-      if (slope === "<10") {
+      if (slope === "<10 %") {
         width = "3 meters";
       } else {
         width = "5 meters";
