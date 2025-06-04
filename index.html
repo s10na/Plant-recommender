@@ -111,30 +111,34 @@
     width = "5 meters";
   }
 
-  // Logic for vegetation
   if (soil === "Sandy" && rain === "Heavy") {
-    vegetation = "Vetiver grass and native deep-rooted grasses";
-  } else if (soil === "Clay") {
-    vegetation = "Willow shrubs and riparian buffer trees";
-  } else if (crop === "< 25 %") {
-    vegetation = "Dense vegetation with erosion control species like ryegrass";
+    vegetationOptions.push("Vetiver grass and native deep-rooted grasses");
+  }
+  if (soil === "Clay") {
+    vegetationOptions.push("Willow shrubs and riparian buffer trees");
+  }
+  if (crop === "< 25 %") {
+    vegetationOptions.push("Dense vegetation with erosion control species like ryegrass");
   } else if (crop === "25 - 50 %") {
-    vegetation = "Mixed grasses with some legume cover like alfalfa";
+    vegetationOptions.push("Mixed grasses with some legume cover like alfalfa");
   } else if (crop === "50 - 75 %") {
-    vegetation = "Perennial cover crops like clover and timothy";
+    vegetationOptions.push("Perennial cover crops like clover and timothy");
   } else if (crop === "> 100 %") {
-    vegetation = "Light buffer with native meadow grasses";
-  } else if (fertilizer === "> 150 kg N/ha") {
-    vegetation = "Dense grass filter strips like tall fescue or ryegrass to capture excess nitrogen";
+    vegetationOptions.push("Light buffer with native meadow grasses");
+  }
+  if (fertilizer === "> 150 kg N/ha") {
+    vegetationOptions.push("Dense grass filter strips like tall fescue or ryegrass to capture excess nitrogen");
   } else if (fertilizer === "50 - 150 kg N/ha") {
-    vegetation = "Moderate grass-legume buffer mix for nutrient retention";
+    vegetationOptions.push("Moderate grass-legume buffer mix for nutrient retention");
   } else if (fertilizer === "< 50 kg N/ha") {
-    vegetation = "Native meadow mix with low-maintenance grasses and forbs";
-  } else {
-    vegetation = "Mixed native grasses and legumes";
+    vegetationOptions.push("Native meadow mix with low-maintenance grasses and forbs");
+  }
+      
+  if (vegetationOptions.length === 0) {
+    vegetationOptions.push("Mixed native grasses and legumes");
   }
 
-  // Output including input values
+  
   document.getElementById("output").innerHTML =
     `<strong> Your Input:</strong><br>` +
     `• Field Slope: ${slope}<br>` +
