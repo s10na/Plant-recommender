@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agro-Eco Plant Recommender</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Agro-Eco Buffer Strip Recommender</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -22,7 +22,7 @@
     select, button {
       margin-top: 5px;
       padding: 8px;
-      width: 200px;
+      width: 250px;
     }
     button {
       margin-top: 15px;
@@ -44,9 +44,9 @@
   </style>
 </head>
 <body>
-  <h2>Agro-Eco Plant Recommender Tool</h2>
+  <h2>Agro-Eco Buffer Strip Recommender Tool</h2>
 
-  <label for="slope">Slope:</label>
+  <label for="slope">Field Slope:</label>
   <select id="slope">
     <option>Flat</option>
     <option>Moderate</option>
@@ -60,38 +60,76 @@
     <option>Loam</option>
   </select>
 
-  <label for="rain">Precipitation Pattern:</label>
+  <label for="rain">Precipitation Intensity:</label>
   <select id="rain">
     <option>Dry</option>
     <option>Moderate</option>
     <option>Heavy</option>
   </select>
 
-  <button onclick="recommendPlant()">Get Recommendation</button>
+  <label for="crop">Crop Type in Buffer Strip:</label>
+  <select id="crop">
+    <option>Grain</option>
+    <option>Vegetables</option>
+    <option>Perennial Grasses</option>
+    <option>Mixed Crops</option>
+  </select>
+
+  <label for="distance">Distance to Water Body:</label>
+  <select id="distance">
+    <option>&lt;10 m</option>
+    <option>10–30 m</option>
+    <option>&gt;30 m</option>
+  </select>
+
+  <label for="fertilizer">Fertilizer Use Intensity:</label>
+  <select id="fertilizer">
+    <option>Low</option>
+    <option>Medium</option>
+    <option>High</option>
+  </select>
+
+  <button onclick="recommendBuffer()">Get Recommendation</button>
 
   <div id="output"></div>
 
   <script>
-    function recommendPlant() {
+    function recommendBuffer() {
       const slope = document.getElementById("slope").value;
       const soil = document.getElementById("soil").value;
       const rain = document.getElementById("rain").value;
+      const crop = document.getElementById("crop").value;
+      const distance = document.getElementById("distance").value;
+      const fertilizer = document.getElementById("fertilizer").value;
 
-      let result = "";
+      let width = "";
+      let vegetation = "";
 
-      if (slope === "Steep" && soil === "Sandy" && rain === "Heavy") {
-        result = "✅ <strong>Vetiver Grass</strong> – Excellent for stabilizing steep, sandy slopes under heavy rainfall.";
-      } else if (slope === "Moderate" && soil === "Loam") {
-        result = "🌾 <strong>Switchgrass</strong> or <strong>Red Clover</strong> – Great for erosion control on moderate slopes with loamy soil.";
-      } else if (slope === "Flat") {
-        result = "🌱 <strong>Cover crops</strong> like <em>Winter Rye</em> or <em>Crimson Clover</em> help reduce runoff and improve soil health.";
-      } else if (slope === "Steep" && soil === "Clay") {
-        result = "🌿 <strong>Willow shrubs</strong> – Deep-rooted and effective for clay-heavy steep terrains.";
+      // Logic for buffer width
+      if (slope === "Steep" || fertilizer === "High" || rain === "Heavy") {
+        width = "20–30 meters";
+      } else if ((slope === "Moderate" || fertilizer === "Medium") && distance === "<10 m") {
+        width = "15–20 meters";
       } else {
-        result = "🪴 Try a mix of <strong>native grasses</strong> and <strong>legumes</strong> suited to your region for optimal erosion control.";
+        width = "10–15 meters";
       }
 
-      document.getElementById("output").innerHTML = result;
+      // Logic for vegetation
+      if (soil === "Sandy" && rain === "Heavy") {
+        vegetation = "Vetiver grass and native deep-rooted grasses";
+      } else if (soil === "Clay" && slope === "Steep") {
+        vegetation = "Willow shrubs and riparian buffer trees";
+      } else if (crop === "Perennial Grasses") {
+        vegetation = "Switchgrass and clover mix";
+      } else if (fertilizer === "High") {
+        vegetation = "Dense grass filter strips like fescue or ryegrass";
+      } else {
+        vegetation = "Mixed native grasses and legumes";
+      }
+
+      document.getElementById("output").innerHTML =
+        `<strong>📏 Recommended Buffer Width:</strong> ${width}<br>` +
+        `<strong>🌿 Suggested Vegetation:</strong> ${vegetation}`;
     }
   </script>
 </body>
