@@ -85,7 +85,7 @@
   <select id="fertilizer">
     <option>&lt;50 kg N/ha</option>
     <option>50-150 kg N/ha</option>
-    <option>gt&;150 kg N/ha</option>
+    <option>gt;150 kg N/ha</option>
   </select>
 
   <button onclick="recommendBuffer()">Get Recommendation</button>
@@ -94,40 +94,58 @@
 
   <script>
     function recommendBuffer() {
-      const slope = document.getElementById("slope").value;
-      const soil = document.getElementById("soil").value;
-      const rain = document.getElementById("rain").value;
-      const crop = document.getElementById("crop").value;
-      const distance = document.getElementById("distance").value;
-      const fertilizer = document.getElementById("fertilizer").value;
+  const slope = document.getElementById("slope").value;
+  const soil = document.getElementById("soil").value;
+  const rain = document.getElementById("rain").value;
+  const crop = document.getElementById("crop").value;
+  const distance = document.getElementById("distance").value;
+  const fertilizer = document.getElementById("fertilizer").value;
 
-      let width = "";
-      let vegetation = "";
+  let width = "";
+  let vegetation = "";
 
-      // Logic for buffer width
-      if (slope === "<10 %") {
-        width = "3 meters";
-      } else {
-        width = "5 meters";
-      }
+  // Logic for buffer width
+  if (slope === "<10 %") {
+    width = "3 meters";
+  } else {
+    width = "5 meters";
+  }
 
-      // Logic for vegetation
-      if (soil === "Sandy" && rain === "Heavy") {
-        vegetation = "Vetiver grass and native deep-rooted grasses";
-      } else if (soil === "Clay" && slope === "Steep") {
-        vegetation = "Willow shrubs and riparian buffer trees";
-      } else if (crop === "Perennial Grasses") {
-        vegetation = "Switchgrass and clover mix";
-      } else if (fertilizer === "High") {
-        vegetation = "Dense grass filter strips like fescue or ryegrass";
-      } else {
-        vegetation = "Mixed native grasses and legumes";
-      }
+  // Logic for vegetation
+  if (soil === "Sandy" && rain === "Heavy") {
+    vegetation = "Vetiver grass and native deep-rooted grasses";
+  } else if (soil === "Clay") {
+    vegetation = "Willow shrubs and riparian buffer trees";
+  } else if (crop === "<25 %") {
+    vegetation = "Dense vegetation with erosion control species like ryegrass";
+  } else if (crop === "25-50 %") {
+    vegetation = "Mixed grasses with some legume cover like alfalfa";
+  } else if (crop === "50-75 %") {
+    vegetation = "Perennial cover crops like clover and timothy";
+  } else if (crop === ">100 %") {
+    vegetation = "Light buffer with native meadow grasses";
+  } else if (fertilizer === ">150 kg N/ha") {
+    vegetation = "Dense grass filter strips like tall fescue or ryegrass to capture excess nitrogen";
+  } else if (fertilizer === "50-150 kg N/ha") {
+    vegetation = "Moderate grass-legume buffer mix for nutrient retention";
+  } else if (fertilizer === "<50 kg N/ha") {
+    vegetation = "Native meadow mix with low-maintenance grasses and forbs";
+  } else {
+    vegetation = "Mixed native grasses and legumes";
+  }
 
-      document.getElementById("output").innerHTML =
-        `<strong>📏 Recommended Buffer Width:</strong> ${width}<br>` +
-        `<strong>🌿 Suggested Vegetation:</strong> ${vegetation}`;
-    }
+  // Output including input values
+  document.getElementById("output").innerHTML =
+    `<strong>📝 Your Input:</strong><br>` +
+    `• Field Slope: ${slope}<br>` +
+    `• Soil Type: ${soil}<br>` +
+    `• Precipitation Intensity: ${rain}<br>` +
+    `• Crop Coverage: ${crop}<br>` +
+    `• Distance to Water Body: ${distance}<br>` +
+    `• Fertilizer Use: ${fertilizer}<br><br>` +
+    `<strong>📏 Recommended Buffer Width:</strong> ${width}<br>` +
+    `<strong>🌿 Suggested Vegetation:</strong> ${vegetation}`;
+}
   </script>
 </body>
 </html>
