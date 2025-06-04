@@ -46,11 +46,10 @@
 <body>
   <h2>Agro-Eco Buffer Strip Recommender Tool</h2>
 
-  <label for="slope">Field Slope:</label>
+  <label for="slope">Field Slope [%]:</label>
   <select id="slope">
-    <option>Flat</option>
-    <option>Moderate</option>
-    <option>Steep</option>
+    <option>&lt;10</option>
+    <option>&gt;10</option>
   </select>
 
   <label for="soil">Soil Type:</label>
@@ -67,26 +66,26 @@
     <option>Heavy</option>
   </select>
 
-  <label for="crop">Crop Type in Buffer Strip:</label>
+  <label for="crop">Crop Coverage [%]:</label>
   <select id="crop">
-    <option>Grain</option>
-    <option>Vegetables</option>
-    <option>Perennial Grasses</option>
-    <option>Mixed Crops</option>
+    <option>&lt;25</option>
+    <option>25-50</option>
+    <option>50-75</option>
+    <option>&gt;100</option>
   </select>
 
-  <label for="distance">Distance to Water Body:</label>
+  <label for="distance">Distance to Water Body [m]:</label>
   <select id="distance">
-    <option>&lt;10 m</option>
-    <option>10–30 m</option>
-    <option>&gt;30 m</option>
+    <option>&lt;50</option>
+    <option>50–200</option>
+    <option>&gt;200</option>
   </select>
 
-  <label for="fertilizer">Fertilizer Use Intensity:</label>
+  <label for="fertilizer">Fertilizer Use [kg N/ha]:</label>
   <select id="fertilizer">
-    <option>Low</option>
-    <option>Medium</option>
-    <option>High</option>
+    <option>&lt;50</option>
+    <option>50-150</option>
+    <option>gt&150</option>
   </select>
 
   <button onclick="recommendBuffer()">Get Recommendation</button>
@@ -106,12 +105,10 @@
       let vegetation = "";
 
       // Logic for buffer width
-      if (slope === "Steep" || fertilizer === "High" || rain === "Heavy") {
-        width = "20–30 meters";
-      } else if ((slope === "Moderate" || fertilizer === "Medium") && distance === "<10 m") {
-        width = "15–20 meters";
+      if (slope === "<10") {
+        width = "3 meters";
       } else {
-        width = "10–15 meters";
+        width = "5 meters";
       }
 
       // Logic for vegetation
