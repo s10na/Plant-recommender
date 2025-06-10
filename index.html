@@ -93,87 +93,64 @@
   <div id="output"></div>
 
 <script>
-function recommendBuffer() {
-  const slope = document.getElementById("slope").value;
-  const soil = document.getElementById("soil").value;
-  const rain = document.getElementById("rain").value;
-  const crop = document.getElementById("crop").value;
-  const distance = document.getElementById("distance").value;
-  const fertilizer = document.getElementById("fertilizer").value;
+  function recommendBuffer() {
+    const slope = document.getElementById("slope").value;
+    const soil = document.getElementById("soil").value;
+    const rain = document.getElementById("rain").value;
+    const crop = document.getElementById("crop").value;
+    const distance = document.getElementById("distance").value;
+    const fertilizer = document.getElementById("fertilizer").value;
 
-  // Buffer width logic
-  const width = (slope === "< 10 %") ? "3 meters" : "5 meters";
+    let width = "";
+    const vegetationOptions = [];
 
-  // Vegetation suggestions
-  const vegetationOptions = [];
+    // Logic for buffer width
+    if (slope === "< 10 %") {
+      width = "3 meters";
+    } else {
+      width = "5 meters";
+    }
 
-  if (soil === "Sandy" && rain === "Heavy") {
-    vegetationOptions.push("Vetiver grass and native deep-rooted grasses");
+    // Logic for vegetation
+    if (soil === "Sandy" && rain === "Heavy") {
+      vegetationOptions.push("Vetiver grass and native deep-rooted grasses");
+    }
+    if (soil === "Clay") {
+      vegetationOptions.push("Willow shrubs and riparian buffer trees");
+    }
+    if (crop === "< 25 %") {
+      vegetationOptions.push("Dense vegetation with erosion control species like ryegrass");
+    } else if (crop === "25 - 50 %") {
+      vegetationOptions.push("Mixed grasses with some legume cover like alfalfa");
+    } else if (crop === "50 - 75 %") {
+      vegetationOptions.push("Perennial cover crops like clover and timothy");
+    } else if (crop === "> 100 %") {
+      vegetationOptions.push("Light buffer with native meadow grasses");
+    }
+    if (fertilizer === "> 150 kg N/ha") {
+      vegetationOptions.push("Dense grass filter strips like tall fescue or ryegrass to capture excess nitrogen");
+    } else if (fertilizer === "50 - 150 kg N/ha") {
+      vegetationOptions.push("Moderate grass-legume buffer mix for nutrient retention");
+    } else if (fertilizer === "< 50 kg N/ha") {
+      vegetationOptions.push("Native meadow mix with low-maintenance grasses and forbs");
+    }
+
+    if (vegetationOptions.length === 0) {
+      vegetationOptions.push("Mixed native grasses and legumes");
+    }
+
+    const vegetation = vegetationOptions.join("; ");
+
+  
+    document.getElementById("output").innerHTML =
+      `<strong>Your Input:</strong><br>` +
+      `• Field Slope: ${slope}<br>` +
+      `• Soil Type: ${soil}<br>` +
+      `• Precipitation Intensity: ${rain}<br>` +
+      `• Crop Coverage: ${crop}<br>` +
+      `• Distance to Water Body: ${distance}<br>` +
+      `• Fertilizer Use: ${fertilizer}<br><br>` +
+      `<strong>Minimum Buffer Width Requirement:</strong> ${width}<br>` +
+      `<strong>Suggested Vegetation:</strong> ${vegetation}`;
   }
-  if (soil === "Clay") {
-    vegetationOptions.push("Willow shrubs and riparian buffer trees");
-  }
-  if (crop === "< 25 %") {
-    vegetationOptions.push("Dense vegetation with erosion control species like ryegrass");
-  } else if (crop === "25 - 50 %") {
-    vegetationOptions.push("Mixed grasses with some legume cover like alfalfa");
-  } else if (crop === "50 - 75 %") {
-    vegetationOptions.push("Perennial cover crops like clover and timothy");
-  } else if (crop === "> 100 %") {
-    vegetationOptions.push("Light buffer with native meadow grasses");
-  }
-  if (fertilizer === "> 150 kg N/ha") {
-    vegetationOptions.push("Dense grass filter strips like tall fescue or ryegrass to capture excess nitrogen");
-  } else if (fertilizer === "50 - 150 kg N/ha") {
-    vegetationOptions.push("Moderate grass-legume buffer mix for nutrient retention");
-  } else if (fertilizer === "< 50 kg N/ha") {
-    vegetationOptions.push("Native meadow mix with low-maintenance grasses and forbs");
-  }
-
-  if (vegetationOptions.length === 0) {
-    vegetationOptions.push("Mixed native grasses and legumes");
-  }
-
-  const vegetation = vegetationOptions.join("; ");
-
-  // Species matching from table
-  const speciesTable = [
-    { name: "Salix spp. (Willows)", slope: ">10 %", soil: ["Clay", "Loam"], rain: ["Moderate", "Heavy"], crop: "Any", distance: "< 50 m", fertilizer: "Any" },
-    { name: "Alnus glutinosa (Alder)", slope: "< 10 %", soil: ["Loam", "Clay"], rain: ["Moderate", "Heavy"], crop: "Any", distance: "< 50 m", fertilizer: "Any" },
-    { name: "Fraxinus excelsior (Ash)", slope: "< 10 %", soil: ["Loam"], rain: ["Moderate"], crop: "25 - 50 %", distance: "< 50 m", fertilizer: "50 - 150 kg N/ha" },
-    { name: "Prunus/Corylus/Sambucus spp.", slope: "< 10 %", soil: ["Loam"], rain: ["Moderate"], crop: "25 - 50 %", distance: "50 – 200 m", fertilizer: "< 150 kg N/ha" },
-    { name: "Carex/Juncus/Phalaris spp.", slope: "< 10 %", soil: ["Clay", "Loam"], rain: ["Heavy"], crop: "Any", distance: "< 50 m", fertilizer: "Any" },
-    { name: "Elymus/Panicum/Schizachyrium spp.", slope: "< 10 %", soil: ["Sandy", "Loam"], rain: ["Dry", "Moderate"], crop: "Any", distance: "> 200 m", fertilizer: "< 150 kg N/ha" },
-    { name: "Wildflower Mix (native species)", slope: "< 10 %", soil: ["Sandy", "Loam"], rain: ["Dry", "Moderate"], crop: "Any", distance: "> 200 m", fertilizer: "< 50 kg N/ha" }
-  ];
-
-  const matchedSpecies = speciesTable.filter(sp =>
-    (sp.slope === slope || sp.slope === "Any") &&
-    (sp.soil.includes(soil) || sp.soil === "Any") &&
-    (sp.rain.includes(rain) || sp.rain === "Any") &&
-    (sp.crop === crop || sp.crop === "Any") &&
-    (sp.distance === distance || sp.distance === "Any") &&
-    (sp.fertilizer === fertilizer || sp.fertilizer === "Any")
-  ).map(sp => sp.name);
-
-  const speciesOutput = matchedSpecies.length > 0
-    ? matchedSpecies.join("; ")
-    : "No exact species match found — consider native grass mixes.";
-
-  // Output to screen
-  document.getElementById("output").innerHTML =
-    `<strong>Your Input:</strong><br>` +
-    `• Field Slope: ${slope}<br>` +
-    `• Soil Type: ${soil}<br>` +
-    `• Precipitation Intensity: ${rain}<br>` +
-    `• Crop Coverage: ${crop}<br>` +
-    `• Distance to Water Body: ${distance}<br>` +
-    `• Fertilizer Use: ${fertilizer}<br><br>` +
-    `<strong>Minimum Buffer Width Requirement:</strong> ${width}<br>` +
-    `<strong>Suggested Vegetation:</strong> ${vegetation}<br>` +
-    `<strong>Suggested Plant Species:</strong> ${speciesOutput}`;
-}
 </script>
-
-</body>
-</html>
