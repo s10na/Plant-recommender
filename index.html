@@ -97,21 +97,25 @@ function recommendBuffer() {
   let vegetation = "";
 
   // Buffer width
-  width = (slope === "< 10 %") ? "3 meters" : "5 meters";
+  if (slope === "< 10 %") {
+      width = "3 meters";
+    } else {
+      width = "5 meters";
+    }
 
   // Vegetation logic
   if (distance === "< 10 m") {
     if (slope === "> 10 %") {
-      vegetation = "Salix spp.";
+      vegetationOptions.push("Salix spp.");
     } else {
-      vegetation = "Sambucus nigra, Viburnum opulus, Ulmus laevis, Alnus glutinosa, Carex riparia, Juncus effusus, Filipendula ulmaria, Lythrum salicaria";
+      vegetationOptions.push("Sambucus nigra, Viburnum opulus, Ulmus laevis, Alnus glutinosa, Carex riparia, Juncus effusus, Filipendula ulmaria, Lythrum salicaria");
     }
   } else if (distance === "10 – 30 m" && soil === "Loam") {
-    vegetation = "Sambucus nigra, Quercus robur, Festuca pratensis, Lotus corniculatus, Achillea millefolium, Plantago lanceolata";
+    vegetationOptions.push("Sambucus nigra, Quercus robur, Festuca pratensis, Lotus corniculatus, Achillea millefolium, Plantago lanceolata");
   } else if (distance === "> 30 m" && (slope === "> 10 %" || rain === "Dry")) {
-    vegetation = "Festuca ovina, Anthyllis vulneraria, Bromus erectus, Poa angustifolia";
+    vegetationOptions.push("Festuca ovina, Anthyllis vulneraria, Bromus erectus, Poa angustifolia");
   } else {
-    vegetation = "Mixed native grasses and legumes";
+    vegetationOptions.push("Mixed native grasses and legumes");
   }
 
   document.getElementById("output").innerHTML =
