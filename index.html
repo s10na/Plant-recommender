@@ -45,7 +45,9 @@
 </head>
 <body>
   <h2>Agricultural Buffer Strip Recommender</h2>
-
+  
+  <div><img src="Willow Tree.jpg" width="100" alt="My Image" /></div>
+  
   <label for="slope">Field Slope:</label>
   <select id="slope">
     <option>&lt; 10 %</option>
@@ -83,7 +85,7 @@
   <button onclick="recommendBuffer()">Get Recommendation</button>
 
   <div id="output"></div>
-
+  
   <script>
     function recommendBuffer() {
       const slope = document.getElementById("slope").value;
@@ -142,6 +144,5 @@
         `<strong>Suggested Vegetation:</strong> ${vegetation}`;
     }
   </script>
-![Alt text](Plant-recommender/Willow tree.jpg)
 </body>
 </html>
