@@ -52,7 +52,14 @@
     <option>&gt; 10 %</option>
   </select>
 
-  <label for="soil">Soil Texture:</label>
+  <label for="fertilizer">Fertilizer Use:</label>
+  <select id="fertilizer">
+    <option>Low</option>
+    <option>Moderate</option>
+    <option>High</option>
+  </select>
+
+  <label for="soil">Soil Type:</label>
   <select id="soil">
     <option>Clay</option>
     <option>Sandy</option>
@@ -72,13 +79,6 @@
     <option>10 – 30 m</option>
     <option>&gt; 30 m</option>
   </select>
-
-   <label for="fertilizer">Fertilizer Use:</label>
-  <select id="fertilizer">
-    <option>Low</option>
-    <option>Moderate</option>
-    <option>High</option>
-  </select>
   
   <button onclick="recommendBuffer()">Get Recommendation</button>
 
@@ -87,15 +87,15 @@
   <script>
     function recommendBuffer() {
       const slope = document.getElementById("slope").value;
+      const fertilizer = document.getElementById("fertilizer").value;
       const soil = document.getElementById("soil").value;
       const rain = document.getElementById("rain").value;
       const distance = document.getElementById("distance").value;
-      const fertilizer
 
       let width = "";
       const vegetationOptions = [];
 
-      
+      // Updated Buffer Width Logic
       if (slope === "< 10 %") {
         if (fertilizer === "Low") {
           width = "3 meters";
@@ -121,7 +121,7 @@
         } else {
           vegetationOptions.push("Sambucus nigra, Viburnum opulus, Ulmus laevis, Alnus glutinosa, Carex riparia, Juncus effusus, Filipendula ulmaria, Lythrum salicaria");
         }
-      } else if (distance === "10 – 30 m") {
+      } else if (distance === "10 – 30 m" && soil === "Loam") {
         vegetationOptions.push("Sambucus nigra, Quercus robur, Festuca pratensis, Lotus corniculatus, Achillea millefolium, Plantago lanceolata");
       } else if (distance === "> 30 m" && (slope === "> 10 %" || rain === "Dry")) {
         vegetationOptions.push("Festuca ovina, Anthyllis vulneraria, Bromus erectus, Poa angustifolia");
@@ -134,8 +134,8 @@
       document.getElementById("output").innerHTML =
         `<strong>Your Input:</strong><br>` +
         `• Field Slope: ${slope}<br>` +
-        `• Soil Texture: ${soil}<br>` +
         `• Fertilizer Use: ${fertilizer}<br>` +
+        `• Soil Type: ${soil}<br>` +
         `• Precipitation Intensity: ${rain}<br>` +
         `• Distance to Water Body: ${distance}<br><br>` +
         `<strong>Minimum Buffer Width Requirement:</strong> ${width}<br>` +
