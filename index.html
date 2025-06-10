@@ -77,55 +77,49 @@
 
   <div id="output"></div>
 
-<script>
-  function recommendBuffer() {
-    const slope = document.getElementById("slope").value;
-    const soil = document.getElementById("soil").value;
-    const rain = document.getElementById("rain").value;
-    const distance = document.getElementById("distance").value;
+  <script>
+    function recommendBuffer() {
+      const slope = document.getElementById("slope").value;
+      const soil = document.getElementById("soil").value;
+      const rain = document.getElementById("rain").value;
+      const distance = document.getElementById("distance").value;
 
-    let width = "";
-    const vegetationOptions = [];
+      let width = "";
+      const vegetationOptions = [];
 
-function recommendBuffer() {
-  const slope = document.getElementById("slope").value;
-  const soil = document.getElementById("soil").value;
-  const rain = document.getElementById("rain").value;
-  const distance = document.getElementById("distance").value;
+      // Buffer width logic
+      if (slope === "< 10 %") {
+        width = "3 meters";
+      } else {
+        width = "5 meters";
+      }
 
-  let width = "";
-  let vegetation = "";
+      // Vegetation recommendation logic
+      if (distance === "< 10 m") {
+        if (slope === "> 10 %") {
+          vegetationOptions.push("Salix spp.");
+        } else {
+          vegetationOptions.push("Sambucus nigra, Viburnum opulus, Ulmus laevis, Alnus glutinosa, Carex riparia, Juncus effusus, Filipendula ulmaria, Lythrum salicaria");
+        }
+      } else if (distance === "10 – 30 m" && soil === "Loam") {
+        vegetationOptions.push("Sambucus nigra, Quercus robur, Festuca pratensis, Lotus corniculatus, Achillea millefolium, Plantago lanceolata");
+      } else if (distance === "> 30 m" && (slope === "> 10 %" || rain === "Dry")) {
+        vegetationOptions.push("Festuca ovina, Anthyllis vulneraria, Bromus erectus, Poa angustifolia");
+      } else {
+        vegetationOptions.push("Mixed native grasses and legumes");
+      }
 
-  // Buffer width
-  if (slope === "< 10 %") {
-      width = "3 meters";
-    } else {
-      width = "5 meters";
+      const vegetation = vegetationOptions.join(", ");
+
+      document.getElementById("output").innerHTML =
+        `<strong>Your Input:</strong><br>` +
+        `• Field Slope: ${slope}<br>` +
+        `• Soil Type: ${soil}<br>` +
+        `• Precipitation Intensity: ${rain}<br>` +
+        `• Distance to Water Body: ${distance}<br><br>` +
+        `<strong>Minimum Buffer Width Requirement:</strong> ${width}<br>` +
+        `<strong>Suggested Vegetation:</strong> ${vegetation}`;
     }
-
-  // Vegetation logic
-  if (distance === "< 10 m") {
-    if (slope === "> 10 %") {
-      vegetationOptions.push("Salix spp.");
-    } else {
-      vegetationOptions.push("Sambucus nigra, Viburnum opulus, Ulmus laevis, Alnus glutinosa, Carex riparia, Juncus effusus, Filipendula ulmaria, Lythrum salicaria");
-    }
-  } else if (distance === "10 – 30 m" && soil === "Loam") {
-    vegetationOptions.push("Sambucus nigra, Quercus robur, Festuca pratensis, Lotus corniculatus, Achillea millefolium, Plantago lanceolata");
-  } else if (distance === "> 30 m" && (slope === "> 10 %" || rain === "Dry")) {
-    vegetationOptions.push("Festuca ovina, Anthyllis vulneraria, Bromus erectus, Poa angustifolia");
-  } else {
-    vegetationOptions.push("Mixed native grasses and legumes");
-  }
-
-  document.getElementById("output").innerHTML =
-    `<strong>Your Input:</strong><br>` +
-    `• Field Slope: ${slope}<br>` +
-    `• Soil Type: ${soil}<br>` +
-    `• Precipitation Intensity: ${rain}<br>` +
-    `• Distance to Water Body: ${distance}<br><br>` +
-    `<strong>Minimum Buffer Width Requirement:</strong> ${width}<br>` +
-    `<strong>Suggested Vegetation:</strong> ${vegetation}`;
-}
-
-</script>
+  </script>
+</body>
+</html>
