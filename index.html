@@ -66,28 +66,13 @@
     <option>Heavy</option>
   </select>
 
-  <label for="crop">Crop Coverage:</label>
-  <select id="crop">
-    <option>&lt; 25 %</option>
-    <option>25 - 50 %</option>
-    <option>50 - 75 %</option>
-    <option>&gt; 100 %</option>
-  </select>
-
   <label for="distance">Distance to Water Body:</label>
   <select id="distance">
-    <option>&lt; 50 m</option>
-    <option>50 – 200 m</option>
-    <option>&gt; 200 m</option>
+    <option>&lt; 10 m</option>
+    <option>10 – 30 m</option>
+    <option>&gt; 30 m</option>
   </select>
-
-  <label for="fertilizer">Fertilizer Use:</label>
-  <select id="fertilizer">
-    <option>&lt; 50 kg N/ha</option>
-    <option>50 - 150 kg N/ha</option>
-    <option>&gt; 150 kg N/ha</option>
-  </select>
-
+  
   <button onclick="recommendBuffer()">Get Recommendation</button>
 
   <div id="output"></div>
@@ -97,60 +82,46 @@
     const slope = document.getElementById("slope").value;
     const soil = document.getElementById("soil").value;
     const rain = document.getElementById("rain").value;
-    const crop = document.getElementById("crop").value;
     const distance = document.getElementById("distance").value;
-    const fertilizer = document.getElementById("fertilizer").value;
 
     let width = "";
     const vegetationOptions = [];
 
-    // Logic for buffer width
-    if (slope === "< 10 %") {
-      width = "3 meters";
+function recommendBuffer() {
+  const slope = document.getElementById("slope").value;
+  const soil = document.getElementById("soil").value;
+  const rain = document.getElementById("rain").value;
+  const distance = document.getElementById("distance").value;
+
+  let width = "";
+  let vegetation = "";
+
+  // Buffer width
+  width = (slope === "< 10 %") ? "3 meters" : "5 meters";
+
+  // Vegetation logic
+  if (distance === "< 10 m") {
+    if (slope === "> 10 %") {
+      vegetation = "Salix spp.";
     } else {
-      width = "5 meters";
+      vegetation = "Sambucus nigra, Viburnum opulus, Ulmus laevis, Alnus glutinosa, Carex riparia, Juncus effusus, Filipendula ulmaria, Lythrum salicaria";
     }
-
-    // Logic for vegetation
-    if (soil === "Sandy" && rain === "Heavy") {
-      vegetationOptions.push("Vetiver grass and native deep-rooted grasses");
-    }
-    if (soil === "Clay") {
-      vegetationOptions.push("Willow shrubs and riparian buffer trees");
-    }
-    if (crop === "< 25 %") {
-      vegetationOptions.push("Dense vegetation with erosion control species like ryegrass");
-    } else if (crop === "25 - 50 %") {
-      vegetationOptions.push("Mixed grasses with some legume cover like alfalfa");
-    } else if (crop === "50 - 75 %") {
-      vegetationOptions.push("Perennial cover crops like clover and timothy");
-    } else if (crop === "> 100 %") {
-      vegetationOptions.push("Light buffer with native meadow grasses");
-    }
-    if (fertilizer === "> 150 kg N/ha") {
-      vegetationOptions.push("Dense grass filter strips like tall fescue or ryegrass to capture excess nitrogen");
-    } else if (fertilizer === "50 - 150 kg N/ha") {
-      vegetationOptions.push("Moderate grass-legume buffer mix for nutrient retention");
-    } else if (fertilizer === "< 50 kg N/ha") {
-      vegetationOptions.push("Native meadow mix with low-maintenance grasses and forbs");
-    }
-
-    if (vegetationOptions.length === 0) {
-      vegetationOptions.push("Mixed native grasses and legumes");
-    }
-
-    const vegetation = vegetationOptions.join("; ");
-
-  
-    document.getElementById("output").innerHTML =
-      `<strong>Your Input:</strong><br>` +
-      `• Field Slope: ${slope}<br>` +
-      `• Soil Type: ${soil}<br>` +
-      `• Precipitation Intensity: ${rain}<br>` +
-      `• Crop Coverage: ${crop}<br>` +
-      `• Distance to Water Body: ${distance}<br>` +
-      `• Fertilizer Use: ${fertilizer}<br><br>` +
-      `<strong>Minimum Buffer Width Requirement:</strong> ${width}<br>` +
-      `<strong>Suggested Vegetation:</strong> ${vegetation}`;
+  } else if (distance === "10 – 30 m" && soil === "Loam") {
+    vegetation = "Sambucus nigra, Quercus robur, Festuca pratensis, Lotus corniculatus, Achillea millefolium, Plantago lanceolata";
+  } else if (distance === "> 30 m" && (slope === "> 10 %" || rain === "Dry")) {
+    vegetation = "Festuca ovina, Anthyllis vulneraria, Bromus erectus, Poa angustifolia";
+  } else {
+    vegetation = "Mixed native grasses and legumes";
   }
+
+  document.getElementById("output").innerHTML =
+    `<strong>Your Input:</strong><br>` +
+    `• Field Slope: ${slope}<br>` +
+    `• Soil Type: ${soil}<br>` +
+    `• Precipitation Intensity: ${rain}<br>` +
+    `• Distance to Water Body: ${distance}<br><br>` +
+    `<strong>Minimum Buffer Width Requirement:</strong> ${width}<br>` +
+    `<strong>Suggested Vegetation:</strong> ${vegetation}`;
+}
+
 </script>
