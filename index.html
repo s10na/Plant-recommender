@@ -218,17 +218,28 @@
       }
 
       const vegetation = vegetationOptions.join(", ");
+
+      const vegetationDescriptions = {
+  "Salix ssp.": `Salix spp. (Willow) are fast-growing shrub or tree species typically found in moist environments such as riparian zones, wetlands, and streambanks. Depending on the species, they can grow from 1.5–3 meters (shrubs) to over 15–20 meters tall (trees), with spreading root systems that can extend several meters both vertically and laterally. They are characterized by their high tolerance to waterlogging, ability to root easily from cuttings, and extensive fibrous roots that provide mechanical reinforcement to the soil. These traits make them particularly suitable for use in bioengineering, especially for soil stabilization, erosion control, and phytoremediation. In buffer strips near agricultural fields, willows effectively absorb excess nutrients (notably nitrogen and phosphorus), slow down surface runoff, promote infiltration and sedimentation, and provide ecological habitat for birds and insects. Their rapid growth, low maintenance requirements, and high biomass production make them an economically and ecologically sustainable solution for protecting water bodies and restoring degraded riparian landscapes.`
+};
+
       
       // Output
-      document.getElementById("output").innerHTML =
-        `<strong>Your Input:</strong><br>` +
-        `• Field Slope: ${slopeText}<br>` +
-        `• Fertilizer Use: ${fertilizer}<br>` +
-        `• Soil Type: ${soil}<br>` +
-        `• Precipitation Intensity: ${rain}<br>` +
-        `• Distance to Water Body: ${distanceText}<br><br>` +
-        `<strong>Minimum Buffer Width Requirement:</strong> ${width}<br>` +
-        `<strong>Suggested Vegetation:</strong> ${vegetation}`;
+      let descriptionText = "";
+if (vegetationDescriptions[vegetation]) {
+  descriptionText = `<br><strong>Vegetation Details:</strong> ${vegetationDescriptions[vegetation]}`;
+}
+
+document.getElementById("output").innerHTML =
+  `<strong>Your Input:</strong><br>` +
+  `• Field Slope: ${slopeText}<br>` +
+  `• Fertilizer Use: ${fertilizer}<br>` +
+  `• Soil Type: ${soil}<br>` +
+  `• Precipitation Intensity: ${rain}<br>` +
+  `• Distance to Water Body: ${distanceText}<br><br>` +
+  `<strong>Minimum Buffer Width Requirement:</strong> ${width}<br>` +
+  `<strong>Suggested Vegetation:</strong> ${vegetation}` +
+  descriptionText;
     }
   </script>
 </body>
