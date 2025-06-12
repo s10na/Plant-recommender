@@ -19,20 +19,34 @@
       margin-top: 10px;
       font-weight: bold;
     }
-    select, button {
+    select {
       margin-top: 5px;
       padding: 8px;
       width: 250px;
     }
-    button {
+    
+    .btn {
       margin-top: 15px;
-      background-color: #2a6d4f;
-      color: white;
+      padding: 8px 16px;
+      width: 250px;
       border: none;
       cursor: pointer;
+      font-weight: bold;
+      border-radius: 4px;
     }
-    button:hover {
+    .btn-primary {
+      background-color: #2a6d4f;
+      color: white;
+    }
+    .btn-primary:hover {
       background-color: #3c8b67;
+    }
+    .btn-secondary {
+      background-color: #ccc;
+      color: #333;
+    }
+    .btn-secondary:hover {
+      background-color: #bbb;
     }
     #output {
       margin-top: 20px;
@@ -40,6 +54,12 @@
       padding: 15px;
       border-radius: 8px;
       width: fit-content;
+    }
+    .input-info {
+      font-size: 0.9em;
+      color: #555;
+      margin: 5px 0 10px 0;
+      max-width: 600px;
     }
   </style>
 </head>
@@ -63,13 +83,27 @@
       </a>
     </p>
   </div>
-  <label for="slope">Field Slope:</label>
-  <select id="slope">
-    <option>&lt; 10 %</option>
-    <option>&gt; 10 %</option>
-  </select>
 
+ <!-- Select Fields -->
+  <label for="slope">Field Slope:</label>
+  <p class="input-info">
+    The slope of a field influences how water and nutrients move across the land. Fields with steep slopes 
+    (greater than 10%) have a higher risk of soil erosion and nutrient runoff, especially during heavy rainfall. <br><br>
+    You can estimate slope using topographic maps, digital elevation models (DEM), online tools like 
+    Google Earth, or GIS platforms (e.g. www.agraratlas.inspire.gv.at). Even smartphone apps can assist with on-site estimation.
+  </p>
+  <select id="slope">
+    <option value="lt10">< 10 %</option>
+    <option value="gt10">> 10 %</option>
+  </select>
+  
+  
   <label for="fertilizer">Fertilizer Use:</label>
+  <p class="input-info">
+  Fertilizer use affects the amount of nitrogen and phosphorus that can be lost from fields into waterways. 
+  Higher use increases the risk of nutrient runoff, especially without proper buffer zones. <br><br>
+  You can estimate inorganic (chemical or mineral) fertilizer use based on your fertilization plan or farm records.
+  </p>
   <select id="fertilizer">
     <option>Low</option>
     <option>Moderate</option>
@@ -77,43 +111,80 @@
   </select>
 
   <label for="soil">Soil Type:</label>
+  <p class="input-info">
+    Soil type influences water infiltration, erosion, and nutrient retention. For example, sandy soils drain quickly 
+    but hold fewer nutrients, while clay soils retain water and nutrients longer but can erode easily.<br><br>
+    You can determine your soil type using a soil survey, agricultural extension services, or by submitting a soil sample 
+    to a lab. Online tools like SoilGrids or local GIS databases (e.g. https://bodenkarte.at) may also help.<br><br>
+    Choose the dominant fraction in the topsoil — for example, if your soil is classified as sandy loam, select "Loam".
+  </p>
   <select id="soil">
     <option>Clay</option>
-    <option>Sandy</option>
+    <option>Sand</option>
     <option>Loam</option>
   </select>
 
-  <label for="rain">Precipitation Intensity:</label>
+  <label for="rain">Annual Precipitation:</label>
+  <p class="input-info">
+    Annual precipitation affects surface runoff and erosion risk. Areas with higher rainfall require wider buffer strips 
+    to manage water and nutrient flow. <br><br>
+    • <strong>Dry:</strong> 0–699 mm/year<br>
+    • <strong>Moderate:</strong> 700–1499 mm/year<br>
+    • <strong>Heavy:</strong> 1500+ mm/year<br><br>
+    You can find precipitation data from meteorological services, regional climate portals, or long-term farm records.
+    For Austria, you can find a map with mean annual precipitation values on the WebGIS application eHYD (https://ehyd.gv.at/).
+  </p>
   <select id="rain">
-    <option>Dry</option>
-    <option>Moderate</option>
-    <option>Heavy</option>
+    <option value="Dry">Dry (0–699 mm/year)</option>
+    <option value="Moderate">Moderate (700–1499 mm/year)</option>
+    <option value="Heavy">Heavy (>1500 mm/year)</option>
   </select>
 
   <label for="distance">Distance to Water Body:</label>
+  <p class="input-info">
+    The proximity of a field to rivers, lakes, or ditches influences how quickly runoff can enter water bodies. 
+    Fields closer to water require stricter management to prevent pollution. <br><br>
+    You can estimate distance using field maps, aerial imagery, GIS tools, or simply measure with a rangefinder or app.
+  </p>
   <select id="distance">
-    <option>&lt; 10 m</option>
-    <option>10 – 30 m</option>
-    <option>&gt; 30 m</option>
+    <option value="lt10">< 10 m</option>
+    <option value="10-30">10 – 30 m</option>
+    <option value="gt30">> 30 m</option>
   </select>
   
-  <button onclick="recommendBuffer()">Get Recommendation</button>
-
-  <div id="output"></div>
+  <button class="btn btn-primary" onclick="recommendBuffer()">Get Recommendation</button>
+  <button class="btn btn-secondary" onclick="resetForm()">Reset</button>
   
+  <div id="output"></div>
+
+  <!-- JavaScript -->
   <script>
+     function resetForm() {
+        document.getElementById("slope").selectedIndex = 0;
+        document.getElementById("fertilizer").selectedIndex = 0;
+        document.getElementById("soil").selectedIndex = 0;
+        document.getElementById("rain").selectedIndex = 0;
+        document.getElementById("distance").selectedIndex = 0;
+        document.getElementById("output").innerHTML = "";
+      }
+    
     function recommendBuffer() {
+      // Get selected values
       const slope = document.getElementById("slope").value;
+      const slopeText = document.getElementById("slope").selectedOptions[0].text;
+      
       const fertilizer = document.getElementById("fertilizer").value;
       const soil = document.getElementById("soil").value;
       const rain = document.getElementById("rain").value;
+      
       const distance = document.getElementById("distance").value;
+      const distanceText = document.getElementById("distance").selectedOptions[0].text;
 
       let width = "";
       const vegetationOptions = [];
 
-      // Updated Buffer Width Logic
-      if (slope === "< 10 %") {
+      // Buffer Width Logic
+      if (slope === "lt10") {
         if (fertilizer === "Low") {
           width = "3 meters";
         } else if (fertilizer === "Moderate") {
@@ -121,7 +192,7 @@
         } else if (fertilizer === "High") {
           width = "10 meters";
         }
-      } else if (slope === "> 10 %") {
+      } else if (slope === "gt10") {
         if (rain === "Dry") {
           width = "5 meters";
         } else if (rain === "Moderate") {
@@ -132,29 +203,30 @@
       }
 
       // Vegetation recommendation logic
-      if (distance === "< 10 m") {
-        if (slope === "> 10 %") {
+      if (distance === "lt10") {
+        if (slope === "gt10") {
           vegetationOptions.push("Salix spp.");
         } else {
           vegetationOptions.push("Sambucus nigra, Viburnum opulus, Ulmus laevis, Alnus glutinosa, Carex riparia, Juncus effusus, Filipendula ulmaria, Lythrum salicaria");
         }
-      } else if (distance === "10 – 30 m" && soil === "Loam") {
+      } else if (distance === "10-30" && soil === "Loam") {
         vegetationOptions.push("Sambucus nigra, Quercus robur, Festuca pratensis, Lotus corniculatus, Achillea millefolium, Plantago lanceolata");
-      } else if (distance === "> 30 m" && (slope === "> 10 %" || rain === "Dry")) {
+      } else if (distance === "gt30" && (slope === "gt10" || rain === "Dry")) {
         vegetationOptions.push("Festuca ovina, Anthyllis vulneraria, Bromus erectus, Poa angustifolia");
       } else {
         vegetationOptions.push("Mixed native grasses and legumes");
       }
 
       const vegetation = vegetationOptions.join(", ");
-
+      
+      // Output
       document.getElementById("output").innerHTML =
         `<strong>Your Input:</strong><br>` +
-        `• Field Slope: ${slope}<br>` +
+        `• Field Slope: ${slopeText}<br>` +
         `• Fertilizer Use: ${fertilizer}<br>` +
         `• Soil Type: ${soil}<br>` +
         `• Precipitation Intensity: ${rain}<br>` +
-        `• Distance to Water Body: ${distance}<br><br>` +
+        `• Distance to Water Body: ${distanceText}<br><br>` +
         `<strong>Minimum Buffer Width Requirement:</strong> ${width}<br>` +
         `<strong>Suggested Vegetation:</strong> ${vegetation}`;
     }
