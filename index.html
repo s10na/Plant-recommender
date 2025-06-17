@@ -103,16 +103,12 @@
   <p class="input-info">
   Fertilizer use affects the amount of nitrogen and phosphorus that can be lost from fields into waterways. 
   Higher use increases the risk of nutrient runoff, especially without proper buffer zones. <br><br>
-  You can estimate inorganic (chemical or mineral) fertilizer use based on your fertilization plan or farm records.<br><br>
-  <strong>Fertilizer use categories:</strong><br>
-  - <strong>Low</strong>: Less than <code>50 kg/ha</code> Nitrogen <em>and</em> less than <code>10 kg/ha</code> Phosphorus<br>
-  - <strong>Moderate</strong>: Between <code>50–100 kg/ha</code> Nitrogen <em>or</em> <code>10–20 kg/ha</code> Phosphorus<br>
-  - <strong>High</strong>: More than <code>100 kg/ha</code> Nitrogen <em>or</em> more than <code>20 kg/ha</code> Phosphorus
+  You can estimate inorganic (chemical or mineral) fertilizer use based on your fertilization plan or farm records.
   </p>
   <select id="fertilizer">
-    <option value="low">Low (&lt; 50 kg/ha N and &lt; 10 kg/ha P)</option>
-    <option value="moderate">Moderate (50–100 kg/ha N or 10–20 kg/ha P)</option>
-    <option value="high">High (&gt; 100 kg/ha N or &gt; 20 kg/ha P)</option>
+    <option>Low</option>
+    <option>Moderate</option>
+    <option>High</option>
   </select>
 
   <label for="soil">Soil Type:</label>
@@ -124,9 +120,9 @@
     Choose the dominant fraction in the topsoil — for example, if your soil is classified as sandy loam, select "Loam".
   </p>
   <select id="soil">
-   <option value="sand">Sand</option>
-    <option value="loam">Loam</option>
-    <option value="clay">Clay</option>
+    <option>Clay</option>
+    <option>Sand</option>
+    <option>Loam</option>
   </select>
 
   <label for="rain">Annual Precipitation:</label>
@@ -190,11 +186,11 @@
 
       // Buffer Width Logic
       if (slope === "lt10") {
-        if (fertilizer === "low") {
+        if (fertilizer === "Low") {
           width = "3 meters";
-        } else if (fertilizer === "moderate") {
+        } else if (fertilizer === "Moderate") {
           width = "5 meters";
-        } else if (fertilizer === "high") {
+        } else if (fertilizer === "High") {
           width = "10 meters";
         }
       } else if (slope === "gt10") {
@@ -214,7 +210,7 @@
         } else {
           vegetationOptions.push("Sambucus nigra, Viburnum opulus, Ulmus laevis, Alnus glutinosa, Carex riparia, Juncus effusus, Filipendula ulmaria, Lythrum salicaria");
         }
-      } else if (distance === "10-30" && soil === "loam") {
+      } else if (distance === "10-30" && soil === "Loam") {
         vegetationOptions.push("Sambucus nigra, Quercus robur, Festuca pratensis, Lotus corniculatus, Achillea millefolium, Plantago lanceolata");
       } else if (distance === "gt30" && (slope === "gt10" || rain === "Dry")) {
         vegetationOptions.push("Festuca ovina, Anthyllis vulneraria, Bromus erectus, Poa angustifolia");
